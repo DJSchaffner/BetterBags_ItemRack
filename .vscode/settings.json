@@ -1,0 +1,17 @@
+{
+  "Lua.diagnostics.globals": [
+    "CreateFrame",
+    "print",
+    "UIDropDownMenu_SetWidth",
+    "UIDropDownMenu_SetText",
+    "UIDropDownMenu_Initialize",
+    "SlashCmdList",
+    "ToggleDropDownMenu",
+    "UIDropDownMenu_AddButton",
+    "UIDropDownMenu_CreateInfo",
+    "UnitBuff",
+    "DEFAULT_CHAT_FRAME",
+    "StaticPopupDialogs",
+    "StaticPopup_Show"
+  ]
+}
