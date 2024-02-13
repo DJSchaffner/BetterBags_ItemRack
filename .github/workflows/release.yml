@@ -19,4 +19,7 @@ jobs:
       - name: Zip folder
         run: zip -r BetterBags_ItemRack.zip . -x .git/\* .github/\* .vscode/\* \*.bat icon.png
 
-        
+      - name: Create release
+        uses: actions/create-release@v1
+        with:
+          files: BetterBags_ItemRack.zip
