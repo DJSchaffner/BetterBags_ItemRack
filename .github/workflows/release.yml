@@ -2,9 +2,9 @@ name: Release
 
 # Controls when the workflow will run
 on:
-  release:
-    types:
-      - created
+  push:
+    tags:
+      - 'v*'
 
   workflow_dispatch:
 
@@ -22,4 +22,6 @@ jobs:
       - name: Create release
         uses: actions/create-release@v1
         with:
-          files: BetterBags_ItemRack.zip
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          files: BetterBags_ItemRack-${{ github.ref }}.zip
