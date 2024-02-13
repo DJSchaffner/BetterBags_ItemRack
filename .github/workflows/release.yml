@@ -25,4 +25,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Zip release
-        run: zip -r BetterBags_ItemRack.zip . -x .git/\* .github/\* .vscode/\*
+        run: zip -r BetterBags_ItemRack.zip . -x .git/\* .github/\* .vscode/\* \*.bat
