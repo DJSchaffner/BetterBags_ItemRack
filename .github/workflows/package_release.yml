@@ -16,11 +16,6 @@ jobs:
       - name: Zip folder
         run: zip -r BetterBags_ItemRack-${{ github.ref }}.zip . -x .git/\* .github/\* .vscode/\* \*.bat icon.png
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.token }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }} 
-          asset_path: ./BetterBags_ItemRack-${{ github.ref }}.zip
-          asset_name: BetterBags_ItemRack-{{$}}
+      - name: test
+        run: echo hello
+    
