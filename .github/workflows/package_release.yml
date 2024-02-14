@@ -1,13 +1,11 @@
 name: Package Release
 
-# Controls when the workflow will run
 on:
   release:
-    types: [created]
+    types: [created, published]
 
 jobs:
   release:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     steps:
