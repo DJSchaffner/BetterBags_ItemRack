@@ -37,11 +37,13 @@ local function updateCategory()
 			-- Loop all items of set
 			for _, item in pairs(ItemRackUser.Sets[setName].equip) do
 				local id = tonumber(split(item, ":")[1])
-				--printChat(id)
-				--printChat(GetItemInfo(ItemRack.IRStringToItemString(item)))
-				categories:AddItemToCategory(id, L:G(categoryName))
-				printChat("Added item '" .. id .. "' to '" .. categoryName .. "' category")
-			end	
+
+				-- Adding items that don't exist causes errors
+				if id ~= 0 then
+					categories:AddItemToCategory(id, L:G(categoryName))
+					--printChat("Added item '" .. id .. "' to '" .. categoryName .. "' category")
+				end
+			end
 		else
 			printChat("Skipping internal set: " .. setName)
 		end
@@ -59,7 +61,8 @@ frame:SetScript("OnEvent", function(self, event, addon, ...)
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_SAVED", itemRackUpdated)
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_DELETED", itemRackUpdated)
 
-		printChat("ItemRack Loaded.. Initializing Category")
+		printChat("ItemRack Loaded..")
+		printChat("Initializing Category..")
 		updateCategory()
 	end
 end)
