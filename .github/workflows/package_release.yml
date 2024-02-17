@@ -2,7 +2,7 @@ name: Package Release
 
 on:
   release:
-    types: [created, published]
+    types: [published]
 
 jobs:
   release:
@@ -16,4 +16,3 @@ jobs:
 
       - name: test
         run: echo hello
-    
