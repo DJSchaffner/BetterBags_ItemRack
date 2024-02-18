@@ -1,4 +1,4 @@
 @echo off
 echo Copying files...
-xcopy "..\BetterBags_ItemRack" "C:\Program Files (x86)\World of Warcraft\_classic_era_\Interface\AddOns" /exclude:exclude.txt /y
+xcopy "." "C:\Program Files (x86)\World of Warcraft\_classic_era_\Interface\AddOns\BetterBags_ItemRack" /exclude:exclude.txt /y /i
 echo Deployed
