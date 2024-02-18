@@ -1,0 +1,6 @@
+.png
+.md
+.bat
+.txt
+.github/
+.vscode/
