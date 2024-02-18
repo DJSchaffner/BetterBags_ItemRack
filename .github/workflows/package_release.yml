@@ -20,5 +20,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.token }}
         with:
-          files: ./${{ github.event.repository.name }}-${{ github.ref_name }}.zip
+          files: ${{ github.event.repository.name }}-${{ github.ref_name }}.zip
           generate_release_notes: true
