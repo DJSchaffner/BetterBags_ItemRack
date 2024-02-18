@@ -20,5 +20,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.token }}
         with:
-          body: ${{ github.workspace }}
           files: ./BetterBags_ItemRack-${{ github.ref_name }}.zip
+          generate_release_notes: true
