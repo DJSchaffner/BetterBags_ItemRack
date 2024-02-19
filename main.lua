@@ -25,6 +25,25 @@ local function split(s, sep)
 	return fields
 end
 
+local function findSetsForItem(searchId)
+	local sets = {}
+	
+	for name, set in pairs(ItemRackUser.Sets) do
+		if name ~= nil and name ~= "nil" and string.sub(name, 1, 1) ~= "~" then
+			for _, id in pairs(set["equip"]) do
+				if id ~= "0" then
+					if ItemRack.SameID(searchId, id) then
+						table.insert(sets, name)
+					end
+				end
+			end
+		end
+	end
+	
+	table.sort(sets)
+	return sets
+end
+
 local function updateCategory()
 	-- Wipe category since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
 	categories:WipeCategory(L:G(categoryName))
@@ -33,7 +52,6 @@ local function updateCategory()
 	for setName, _ in pairs(ItemRackUser.Sets) do
 		-- Only update user sets (internals start with '~')
 		if not string.match(setName, "^~") then
-			categories:WipeCategory(L:G(setName))
 			printChat("Updating set: " .. setName)
 			-- Loop all items of set
 			for _, item in pairs(ItemRackUser.Sets[setName].equip) do
@@ -41,8 +59,18 @@ local function updateCategory()
 
 				-- Adding items that don't exist causes errors
 				if id ~= 0 then
-					categories:AddItemToCategory(id, L:G(setName))
-					--printChat("Added item '" .. id .. "' to '" .. categoryName .. "' category")
+					local itemSetNames = findSetsForItem(id)
+					local label = nil
+
+					for _1, itemSetName in ipairs(itemSetNames) do
+						if label == nil then
+							label = itemSetName
+						else
+							label = label .. ", " .. itemSetName
+						end
+					end
+					categories:AddItemToCategory(id, L:G(label))
+					-- printChat("Added item '" .. id .. "' to '" .. categoryName .. "' category")
 				end
 			end
 		else
@@ -51,7 +79,8 @@ local function updateCategory()
 	end
 end
 
-local function itemRackUpdated(event, _)
+
+local function itemRackUpdated(event, eventData)
 	printChat(event)
 	updateCategory()
 end
@@ -61,6 +90,7 @@ frame:SetScript("OnEvent", function(self, event, addon, ...)
 	if event == "ADDON_LOADED" and addon == "ItemRack" then
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_SAVED", itemRackUpdated)
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_DELETED", itemRackUpdated)
+		
 
 		printChat("ItemRack Loaded..")
 		printChat("Initializing Category..")
