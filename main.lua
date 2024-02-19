@@ -33,6 +33,7 @@ local function updateCategory()
 	for setName, _ in pairs(ItemRackUser.Sets) do
 		-- Only update user sets (internals start with '~')
 		if not string.match(setName, "^~") then
+			categories:WipeCategory(L:G(setName))
 			printChat("Updating set: " .. setName)
 			-- Loop all items of set
 			for _, item in pairs(ItemRackUser.Sets[setName].equip) do
@@ -40,7 +41,7 @@ local function updateCategory()
 
 				-- Adding items that don't exist causes errors
 				if id ~= 0 then
-					categories:AddItemToCategory(id, L:G(categoryName))
+					categories:AddItemToCategory(id, L:G(setName))
 					--printChat("Added item '" .. id .. "' to '" .. categoryName .. "' category")
 				end
 			end
