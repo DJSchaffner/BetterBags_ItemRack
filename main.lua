@@ -7,7 +7,7 @@ local L = addonBetterBags:GetModule('Localization')
 
 local debug = false
 local frame = CreateFrame("Frame", nil)
-local categoryName = "Sets"
+local labels = {}
 -------------------------------------------------------
 local function printChat(message)
 	if debug == true then
@@ -25,30 +25,16 @@ local function split(s, sep)
 	return fields
 end
 
-local function findSetsForItem(searchId)
-	local sets = {}
-	
-	for name, set in pairs(ItemRackUser.Sets) do
-		if name ~= nil and name ~= "nil" and string.sub(name, 1, 1) ~= "~" then
-			for _, id in pairs(set["equip"]) do
-				if id ~= "0" then
-					if ItemRack.SameID(searchId, id) then
-						table.insert(sets, name)
-					end
-				end
-			end
-		end
-	end
-	
-	table.sort(sets)
-	return sets
-end
-
 local function updateCategories()
-	-- Wipe category since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
-	categories:WipeCategory(L:G(categoryName))
+	-- Wipe custom categories since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
+	for label, _ in pairs(labels) do
+		categories:WipeCategory(L:G(label))
+	end
 
-	-- Loop all sets
+	-- Keep track of all used items and their associated sets
+	local usedItems = {}
+
+	-- Loop all sets and collect items
 	for setName, _ in pairs(ItemRackUser.Sets) do
 		-- Only update user sets (internals start with '~')
 		if not string.match(setName, "^~") then
@@ -59,23 +45,34 @@ local function updateCategories()
 
 				-- Adding items that don't exist causes errors
 				if id ~= 0 then
-					local itemSetNames = findSetsForItem(id)
-					local label = nil
+					local itemSets = usedItems[id]
 
-					for _1, itemSetName in ipairs(itemSetNames) do
-						if label == nil then
-							label = itemSetName
-						else
-							label = label .. ", " .. itemSetName
-						end
+					if itemSets == nil then
+						usedItems[id] = { setName }
+						-- Extend existing labels
+					else
+						table.insert(usedItems[id], setName)
 					end
-					categories:AddItemToCategory(id, L:G(label))
-					-- printChat("Added item '" .. id .. "' to '" .. categoryName .. "' category")
 				end
 			end
 		else
 			printChat("Skipping internal set: " .. setName)
 		end
+	end
+	
+	-- Loop collected items and add them to their respective categories
+	for item, sets in pairs(usedItems) do
+		local label = nil
+
+		if #sets == 1 then
+			label = "Set: " .. sets[1]
+		else
+			label = "Sets: ".. table.concat(sets, ", ")
+		end
+
+		table.insert(labels, L:G(label))
+		categories:AddItemToCategory(item, L:G(label))
+		-- printChat("Added item '" .. id .. "' to '" .. categoryName .. "' category")
 	end
 end
 
