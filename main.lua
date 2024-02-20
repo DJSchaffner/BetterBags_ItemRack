@@ -7,7 +7,7 @@ local L = addonBetterBags:GetModule('Localization')
 
 local debug = false
 local frame = CreateFrame("Frame", nil)
-local labels = {}
+local customCategories = {}
 -------------------------------------------------------
 local function printChat(message)
 	if debug == true then
@@ -27,9 +27,9 @@ end
 
 local function updateCategories()
 	-- Wipe custom categories since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
-	for label, _ in pairs(labels) do
+	for category, _ in pairs(customCategories) do
 		-- @TODO completely remove label as custom category from BetterBags
-		categories:WipeCategory(L:G(label))
+		customCategories:WipeCategory(L:G(category))
 	end
 
 	-- Keep track of all used items and their associated sets
@@ -71,9 +71,9 @@ local function updateCategories()
 			label = "Sets: ".. table.concat(sets, ", ")
 		end
 
-		table.insert(labels, L:G(label))
+		table.insert(customCategories, L:G(label))
 		categories:AddItemToCategory(item, L:G(label))
-		-- printChat("Added item '" .. id .. "' to '" .. categoryName .. "' category")
+		-- printChat("Added item '" .. id .. "' to '" .. label .. "' category")
 	end
 end
 
