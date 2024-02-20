@@ -44,7 +44,7 @@ local function findSetsForItem(searchId)
 	return sets
 end
 
-local function updateCategory()
+local function updateCategories()
 	-- Wipe category since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
 	categories:WipeCategory(L:G(categoryName))
 
@@ -82,7 +82,7 @@ end
 
 local function itemRackUpdated(event, eventData)
 	printChat(event)
-	updateCategory()
+	updateCategories()
 end
 -------------------------------------------------------
 frame:RegisterEvent("ADDON_LOADED")
@@ -94,6 +94,6 @@ frame:SetScript("OnEvent", function(self, event, addon, ...)
 
 		printChat("ItemRack Loaded..")
 		printChat("Initializing Category..")
-		updateCategory()
+		updateCategories()
 	end
 end)
