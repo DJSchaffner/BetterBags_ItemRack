@@ -7,7 +7,6 @@ local L = addonBetterBags:GetModule('Localization')
 
 local debug = false
 local frame = CreateFrame("Frame", nil)
-local customCategories = {}
 -------------------------------------------------------
 local function printChat(message)
 	if debug == true then
@@ -27,7 +26,7 @@ end
 
 local function updateCategories()
 	-- Wipe custom categories since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
-	for category, _ in pairs(customCategories) do
+	for category, _ in pairs(CustomCategories) do
 		-- @TODO completely remove label as custom category from BetterBags
 		categories:WipeCategory(L:G(category))
 		printChat("Wiped category '" .. L:G(category) .. "'")
@@ -72,12 +71,22 @@ local function updateCategories()
 			label = "Sets: ".. table.concat(sets, ", ")
 		end
 
-		customCategories[L:G(label)] = true
+		CustomCategories[L:G(label)] = true
 		categories:AddItemToCategory(item, L:G(label))
 		-- printChat("Added item '" .. id .. "' to '" .. label .. "' category")
 	end
 end
 
+local function initCategories()
+	-- Prepare stored variable
+	if CustomCategories == nil then
+		CustomCategories = {}
+	end
+
+	printChat("ItemRack Loaded..")
+	printChat("Initializing Categories..")
+	updateCategories()
+end
 
 local function itemRackUpdated(event, eventData)
 	printChat(event)
@@ -90,9 +99,6 @@ frame:SetScript("OnEvent", function(self, event, addon, ...)
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_SAVED", itemRackUpdated)
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_DELETED", itemRackUpdated)
 		
-
-		printChat("ItemRack Loaded..")
-		printChat("Initializing Categories..")
-		updateCategories()
+		initCategories()
 	end
 end)
