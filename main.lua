@@ -72,7 +72,7 @@ local function updateCategories()
 			label = "Sets: ".. table.concat(sets, ", ")
 		end
 
-		table.insert(customCategories, L:G(label))
+		customCategories[L:G(label)] = true
 		categories:AddItemToCategory(item, L:G(label))
 		-- printChat("Added item '" .. id .. "' to '" .. label .. "' category")
 	end
