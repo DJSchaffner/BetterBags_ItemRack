@@ -7,7 +7,9 @@ local L = addonBetterBags:GetModule('Localization')
 
 local debug = false
 local frame = CreateFrame("Frame", nil)
+
 -------------------------------------------------------
+
 local function printChat(message)
 	if debug == true then
 		print("[BetterBags ItemRack] ".. tostring(message))
@@ -92,13 +94,11 @@ local function itemRackUpdated(event, eventData)
 	printChat(event)
 	updateCategories()
 end
+
 -------------------------------------------------------
-frame:RegisterEvent("ADDON_LOADED")
-frame:SetScript("OnEvent", function(self, event, addon, ...)
-	if event == "ADDON_LOADED" and addon == "ItemRack" then
+
+-- Don't listen for load event since it should be loaded already (dependency)
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_SAVED", itemRackUpdated)
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_DELETED", itemRackUpdated)
 		
 		initCategories()
-	end
-end)
