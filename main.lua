@@ -52,7 +52,7 @@ local function updateCategories()
 
 					if itemSets == nil then
 						usedItems[id] = { setName }
-						-- Extend existing labels
+					-- Extend existing labels
 					else
 						table.insert(usedItems[id], setName)
 					end
@@ -77,6 +77,9 @@ local function updateCategories()
 		categories:AddItemToCategory(item, L:G(label))
 		-- printChat("Added item '" .. id .. "' to '" .. label .. "' category")
 	end
+
+	-- Force a refresh in BetterBags
+	categories:ReprocessAllItems()
 end
 
 local function initCategories()
@@ -85,7 +88,6 @@ local function initCategories()
 		CustomCategories = {}
 	end
 
-	printChat("ItemRack Loaded..")
 	printChat("Initializing Categories..")
 	updateCategories()
 end
@@ -98,7 +100,7 @@ end
 -------------------------------------------------------
 
 -- Don't listen for load event since it should be loaded already (dependency)
-		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_SAVED", itemRackUpdated)
-		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_DELETED", itemRackUpdated)
-		
-		initCategories()
+ItemRack:RegisterExternalEventListener("ITEMRACK_SET_SAVED", itemRackUpdated)
+ItemRack:RegisterExternalEventListener("ITEMRACK_SET_DELETED", itemRackUpdated)
+
+initCategories()
