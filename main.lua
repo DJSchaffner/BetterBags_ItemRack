@@ -92,7 +92,7 @@ frame:SetScript("OnEvent", function(self, event, addon, ...)
 		
 
 		printChat("ItemRack Loaded..")
-		printChat("Initializing Category..")
+		printChat("Initializing Categories..")
 		updateCategories()
 	end
 end)
