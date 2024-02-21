@@ -11,7 +11,7 @@ local customCategories = {}
 -------------------------------------------------------
 local function printChat(message)
 	if debug == true then
-		print("[BetterBags ItemRack] "..message)
+		print("[BetterBags ItemRack] ".. tostring(message))
 	end
 end
 
