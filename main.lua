@@ -85,7 +85,10 @@ end
 local function initCategories()
 	-- Prepare stored variable
 	if CustomCategories == nil then
+		printChat("Saved variable initialized..")
 		CustomCategories = {}
+	else
+		printChat("Saved variable restored..")
 	end
 
 	printChat("Initializing Categories..")
@@ -99,8 +102,13 @@ end
 
 -------------------------------------------------------
 
--- Don't listen for load event since it should be loaded already (dependency)
-ItemRack:RegisterExternalEventListener("ITEMRACK_SET_SAVED", itemRackUpdated)
-ItemRack:RegisterExternalEventListener("ITEMRACK_SET_DELETED", itemRackUpdated)
-
-initCategories()
+frame:RegisterEvent("ADDON_LOADED")
+frame:SetScript("OnEvent", function(self, event, addon, ...)
+	-- Listen for this because we need the saved variable to operate
+	if event == "ADDON_LOADED" and addon == "BetterBags_ItemRack" then
+		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_SAVED", itemRackUpdated)
+		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_DELETED", itemRackUpdated)
+		
+		initCategories()
+	end
+end)

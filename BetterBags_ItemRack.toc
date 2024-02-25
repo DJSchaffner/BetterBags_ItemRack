@@ -3,6 +3,7 @@
 ## Notes: Add a category to BetterBags for ItemRack sets
 ## Author: DJSchaffner
 ## Version: @1.3.0
+## SavedVariables: CustomCategories
 ## Dependencies: BetterBags, ItemRack
 
 main.lua
