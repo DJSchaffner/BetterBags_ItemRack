@@ -12,6 +12,24 @@
     "UnitBuff",
     "DEFAULT_CHAT_FRAME",
     "StaticPopupDialogs",
-    "StaticPopup_Show"
+    "StaticPopup_Show",
+    "ITEM_SPELL_CHARGES",
+    "ITEM_SPELL_CHARGES_NONE",
+    "GameTooltip_SetDefaultAnchor",
+    "CombatText_AddMessage",
+    "DURABILITY_TEMPLATE",
+    "ITEM_MIN_SKILL",
+    "CooldownFrame_Set",
+    "ChatFrame1EditBox",
+    "CombatText_StandardScroll",
+    "UIErrorsFrame",
+    "ITEM_CONJURED",
+    "MouseIsOver",
+    "ReloadUI",
+    "ITEM_SOULBOUND",
+    "ITEM_BIND_QUEST",
+    "GameTooltipTextLeft1",
+    "CharacterTrinket0Slot",
+    "COOLDOWN_REMAINING"
   ]
 }
