@@ -29,10 +29,13 @@ end
 local function updateCategories()
 	-- Wipe custom categories since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
 	for category, _ in pairs(CustomCategories) do
-		-- @TODO completely remove label as custom category from BetterBags
-		categories:WipeCategory(L:G(category))
-		printChat("Wiped category '" .. L:G(category) .. "'")
+		-- @TODO use temporary categories when the feature is added in BetterBags
+		categories:DeleteCategory(L:G(category))
+		printChat("Deleted category '" .. L:G(category) .. "'")
 	end
+
+	-- Reset list of in-use categories
+	CustomCategories = {}
 
 	-- Keep track of all used items and their associated sets
 	local usedItems = {}
