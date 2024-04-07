@@ -1,8 +1,8 @@
-## Interface: 11501
+## Interface: 11502
 ## Title: BetterBags - ItemRack
 ## Notes: Add a category to BetterBags for ItemRack sets
 ## Author: DJSchaffner
-## Version: @1.4.0
+## Version: @1.4.1
 ## SavedVariables: CustomCategories
 ## Dependencies: BetterBags, ItemRack
 
