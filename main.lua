@@ -8,6 +8,8 @@ local L = addonBetterBags:GetModule('Localization')
 local debug = false
 local frame = CreateFrame("Frame", nil)
 
+local customCategories = {}
+
 -------------------------------------------------------
 
 local function printChat(message)
@@ -28,14 +30,14 @@ end
 
 local function updateCategories()
 	-- Wipe custom categories since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
-	for category, _ in pairs(CustomCategories) do
+	for category, _ in pairs(customCategories) do
 		-- @TODO use temporary categories when the feature is added in BetterBags
 		categories:DeleteCategory(L:G(category))
 		printChat("Deleted category '" .. L:G(category) .. "'")
 	end
 
 	-- Reset list of in-use categories
-	CustomCategories = {}
+	customCategories = {}
 
 	-- Keep track of all used items and their associated sets
 	local usedItems = {}
@@ -76,7 +78,7 @@ local function updateCategories()
 			label = "Sets: ".. table.concat(sets, ", ")
 		end
 
-		CustomCategories[L:G(label)] = true
+		customCategories[L:G(label)] = true
 		categories:AddItemToCategory(item, L:G(label))
 		-- printChat("Added item '" .. id .. "' to '" .. label .. "' category")
 	end
@@ -87,11 +89,12 @@ end
 
 local function initCategories()
 	-- Prepare stored variable
-	if CustomCategories == nil then
-		printChat("Saved variable initialized..")
-		CustomCategories = {}
-	else
+	if CustomCategories ~= nil then
+		customCategories = CustomCategories
 		printChat("Saved variable restored..")
+
+		-- Reset saved variable (will be deprecated next update)
+		CustomCategories = {}
 	end
 
 	printChat("Initializing Categories..")
