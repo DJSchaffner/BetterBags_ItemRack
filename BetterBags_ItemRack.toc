@@ -1,4 +1,5 @@
-## Interface: 11502
+## Interface-Vanilla: 11502
+## Interface-Cata: 40400
 ## Title: BetterBags - ItemRack
 ## Notes: Add a category to BetterBags for ItemRack sets
 ## Author: DJSchaffner
