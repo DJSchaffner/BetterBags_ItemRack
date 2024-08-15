@@ -9,7 +9,6 @@
     "ToggleDropDownMenu",
     "UIDropDownMenu_AddButton",
     "UIDropDownMenu_CreateInfo",
-    "UnitBuff",
     "DEFAULT_CHAT_FRAME",
     "StaticPopupDialogs",
     "StaticPopup_Show",
@@ -30,6 +29,24 @@
     "ITEM_BIND_QUEST",
     "GameTooltipTextLeft1",
     "CharacterTrinket0Slot",
-    "COOLDOWN_REMAINING"
+    "COOLDOWN_REMAINING",
+    "ItemRack"
+  ],
+  "Lua.runtime.version": "Lua 5.1",
+  "Lua.runtime.builtin": {
+    "basic": "disable",
+    "debug": "disable",
+    "io": "disable",
+    "math": "disable",
+    "os": "disable",
+    "package": "disable",
+    "string": "disable",
+    "table": "disable",
+    "utf8": "disable"
+  },
+  "Lua.workspace.library": [
+    "C:\\Users\\schaffner\\lua\\ItemRack",
+    "C:\\Users\\schaffner\\lua\\BetterBags",
+    "~\\.vscode\\extensions\\ketho.wow-api-0.16.8\\Annotations"
   ]
 }
