@@ -20,18 +20,19 @@ end
 
 local function split(s, sep)
 	local fields = {}
-	
+
 	local sep = sep or " "
 	local pattern = string.format("([^%s]+)", sep)
+
+---@diagnostic disable-next-line: discard-returns
 	string.gsub(s, pattern, function(c) fields[#fields + 1] = c end)
-	
+
 	return fields
 end
 
 local function updateCategories()
 	-- Wipe custom categories since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
 	for category, _ in pairs(customCategories) do
-		-- @TODO use temporary categories when the feature is added in BetterBags
 		categories:DeleteCategory(L:G(category))
 		printChat("Deleted category '" .. L:G(category) .. "'")
 	end
@@ -67,7 +68,7 @@ local function updateCategories()
 			printChat("Skipping internal set: " .. setName)
 		end
 	end
-	
+
 	-- Loop collected items and add them to their respective categories
 	for item, sets in pairs(usedItems) do
 		local label = nil
@@ -105,7 +106,7 @@ frame:SetScript("OnEvent", function(self, event, addon, ...)
 	if event == "ADDON_LOADED" and addon == "BetterBags_ItemRack" then
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_SAVED", itemRackUpdated)
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_DELETED", itemRackUpdated)
-		
+
 		initCategories()
 	end
 end)
