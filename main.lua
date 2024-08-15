@@ -88,15 +88,6 @@ local function updateCategories()
 end
 
 local function initCategories()
-	-- Prepare stored variable
-	if CustomCategories ~= nil then
-		customCategories = CustomCategories
-		printChat("Saved variable restored..")
-
-		-- Reset saved variable (will be deprecated next update)
-		CustomCategories = {}
-	end
-
 	printChat("Initializing Categories..")
 	updateCategories()
 end
