@@ -4,9 +4,12 @@ local addonBetterBags = LibStub('AceAddon-3.0'):GetAddon("BetterBags")
 local categories = addonBetterBags:GetModule('Categories')
 ---@class Localization: AceModule
 local L = addonBetterBags:GetModule('Localization')
+---@class Context: AceModule
+local context = addonBetterBags:GetModule('Context')
 
 local debug = false
 local frame = CreateFrame("Frame", nil)
+local ctx = context:New("BetterBags_ItemRack")
 
 local customCategories = {}
 
@@ -33,7 +36,7 @@ end
 local function updateCategories()
 	-- Wipe custom categories since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
 	for category, _ in pairs(customCategories) do
-		categories:DeleteCategory(L:G(category))
+		categories:DeleteCategory(ctx, L:G(category))
 		printChat("Deleted category '" .. L:G(category) .. "'")
 	end
 
@@ -80,12 +83,12 @@ local function updateCategories()
 		end
 
 		customCategories[L:G(label)] = true
-		categories:AddItemToCategory(item, L:G(label))
+		categories:AddItemToCategory(ctx, item, L:G(label))
 		-- printChat("Added item '" .. id .. "' to '" .. label .. "' category")
 	end
 
 	-- Force a refresh in BetterBags
-	categories:ReprocessAllItems()
+	categories:ReprocessAllItems(ctx)
 end
 
 local function initCategories()
