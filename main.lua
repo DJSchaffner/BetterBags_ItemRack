@@ -61,8 +61,8 @@ local function updateCategories()
 
 					if itemSets == nil then
 						usedItems[id] = { setName }
-					-- Extend existing labels
-					else
+					-- Extend existing labels and filter duplicate items per set
+					elseif usedItems[id][setName] ~= nil then
 						table.insert(usedItems[id], setName)
 					end
 				end
