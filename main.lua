@@ -32,10 +32,14 @@ local function split(s, sep)
 	return fields
 end
 
+local function getContextName(name)
+	return "BetterBags_ItemRack_" .. name
+end
+
 local function updateCategories()
 	-- Wipe custom categories since we can't retrieve deleted set from ItemRack (Except maybe store duplicate of sets and check last version of it)
 	for category, _ in pairs(customCategories) do
-		local ctx = context:New("BetterBags_ItemRack_Deletion")
+		local ctx = context:New(getContextName("Deletion"))
 		categories:DeleteCategory(ctx, L:G(category))
 		printChat("Deleted category '" .. L:G(category) .. "'")
 	end
@@ -93,18 +97,19 @@ local function updateCategories()
 	end
 
 	for category, items in pairs(customCategories) do
-		local ctx = context:New("BetterBags_ItemRack_Creation")
+		local ctx = context:New(getContextName("Creation"))
 		categories:CreateCategory(ctx, {
 			name = L:G(category),
 			itemList = items,
-			note = "Created by BetterBags_ItemRack plugin"
+			note = "Created by BetterBags_ItemRack plugin",
+			save = false
 		})
 
 		printChat("Created category '" .. category .. "' with item list: [" .. table.concat(items, ",") .. "]")
 	end
 
 	-- Force a refresh in BetterBags
-	local ctx = context:New("BetterBags_ItemRack_Refresh")
+	local ctx = context:New(getContextName("Refresh"))
 	categories:ReprocessAllItems(ctx)
 end
 
