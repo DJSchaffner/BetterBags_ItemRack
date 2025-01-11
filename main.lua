@@ -16,7 +16,7 @@ local customCategories = {}
 
 local function printChat(message)
 	if debug == true then
-		print("[BetterBags ItemRack] ".. tostring(message))
+		print("[BetterBags ItemRack] " .. tostring(message))
 	end
 end
 
@@ -33,7 +33,7 @@ local function split(s, sep)
 end
 
 local function updateCategories()
-	-- Wipe custom categories since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
+	-- Wipe custom categories since we can't retrieve deleted set from ItemRack (Except maybe store duplicate of sets and check last version of it)
 	for category, _ in pairs(customCategories) do
 		local ctx = context:New("BetterBags_ItemRack_Deletion")
 		categories:DeleteCategory(ctx, L:G(category))
@@ -61,7 +61,7 @@ local function updateCategories()
 
 					if itemSets == nil then
 						usedItems[id] = { setName }
-						-- Extend existing labels and filter duplicate items per set
+					-- Extend existing labels and filter duplicate items per set
 					elseif usedItems[id][setName] ~= nil then
 						table.insert(usedItems[id], setName)
 					end
@@ -122,7 +122,7 @@ end
 
 frame:RegisterEvent("ADDON_LOADED")
 frame:SetScript("OnEvent", function(self, event, addon, ...)
-	-- Listen for this because we need the saved variable to operate
+	-- Technically since we don't use saved variables anymore waiting here isn't necessary, but doesn't hurt
 	if event == "ADDON_LOADED" and addon == "BetterBags_ItemRack" then
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_SAVED", itemRackUpdated)
 		ItemRack:RegisterExternalEventListener("ITEMRACK_SET_DELETED", itemRackUpdated)
