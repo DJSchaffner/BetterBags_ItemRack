@@ -9,7 +9,6 @@ local context = addonBetterBags:GetModule('Context')
 
 local debug = false
 local frame = CreateFrame("Frame", nil)
-local ctx = context:New("BetterBags_ItemRack")
 
 local customCategories = {}
 
@@ -27,7 +26,7 @@ local function split(s, sep)
 	local sep = sep or " "
 	local pattern = string.format("([^%s]+)", sep)
 
----@diagnostic disable-next-line: discard-returns
+	---@diagnostic disable-next-line: discard-returns
 	string.gsub(s, pattern, function(c) fields[#fields + 1] = c end)
 
 	return fields
@@ -36,6 +35,7 @@ end
 local function updateCategories()
 	-- Wipe custom categories since we can't retrieve deleted set from itemRack (Except maybe store duplicate of sets and check last version of it)
 	for category, _ in pairs(customCategories) do
+		local ctx = context:New("BetterBags_ItemRack_Deletion")
 		categories:DeleteCategory(ctx, L:G(category))
 		printChat("Deleted category '" .. L:G(category) .. "'")
 	end
@@ -61,7 +61,7 @@ local function updateCategories()
 
 					if itemSets == nil then
 						usedItems[id] = { setName }
-					-- Extend existing labels and filter duplicate items per set
+						-- Extend existing labels and filter duplicate items per set
 					elseif usedItems[id][setName] ~= nil then
 						table.insert(usedItems[id], setName)
 					end
@@ -73,21 +73,38 @@ local function updateCategories()
 	end
 
 	-- Loop collected items and add them to their respective categories
-	for item, sets in pairs(usedItems) do
+	for itemId, itemSets in pairs(usedItems) do
 		local label = nil
 
-		if #sets == 1 then
-			label = "Set: " .. sets[1]
+		if #itemSets == 1 then
+			label = "Set: " .. itemSets[1]
 		else
-			label = "Sets: ".. table.concat(sets, ", ")
+			label = "Sets: ".. table.concat(itemSets, ", ")
 		end
 
-		customCategories[L:G(label)] = true
-		categories:AddItemToCategory(ctx, item, L:G(label))
-		-- printChat("Added item '" .. id .. "' to '" .. label .. "' category")
+		local categoryItemList = customCategories[L:G(label)]
+
+		if categoryItemList then
+			customCategories[L:G(label)][itemId] = true
+		else
+			customCategories[L:G(label)] = {[itemId] = true}
+		end
+		-- printChat("Added item '" .. item .. "' to '" .. label .. "' category")
+	end
+
+	for category, items in pairs(customCategories) do
+		local ctx = context:New("BetterBags_ItemRack_Creation")
+		categories:CreateCategory(ctx, {
+			name = L:G(category),
+			itemList = items,
+			note = "Created by BetterBags_ItemRack plugin"
+		})
+
+		printChat("Created category '" .. category .. "' with item list: [" .. table.concat(items, ",") .. "]")
 	end
 
 	-- Force a refresh in BetterBags
+	local ctx = context:New("BetterBags_ItemRack_Refresh")
 	categories:ReprocessAllItems(ctx)
 end
 
