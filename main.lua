@@ -64,11 +64,10 @@ local function updateCategories()
 					local itemSets = usedItems[id]
 
 					if itemSets == nil then
-						usedItems[id] = { setName }
-					-- Extend existing labels and filter duplicate items per set
-					elseif usedItems[id][setName] ~= nil then
-						table.insert(usedItems[id], setName)
+						usedItems[id] = {}
 					end
+
+					usedItems[id][setName] = true
 				end
 			end
 		else
@@ -79,11 +78,30 @@ local function updateCategories()
 	-- Loop collected items and add them to their respective categories
 	for itemId, itemSets in pairs(usedItems) do
 		local label = nil
+		local count = 0
+		local firstSet = nil
 
-		if #itemSets == 1 then
-			label = "Set: " .. itemSets[1]
+		-- Loop item sets and find # of items. Also store first item
+		for setName, _ in pairs(itemSets) do
+			count = count + 1
+
+			if count == 1 then
+				firstSet = setName
+			end
+			if count > 1 then
+				break
+			end
+		end
+
+		if count == 1 then
+			label = "Set: " .. firstSet
 		else
-			label = "Sets: ".. table.concat(itemSets, ", ")
+			local setNames = {}
+			for setName, _ in pairs(itemSets) do
+				table.insert(setNames, setName)
+			end
+
+			label = "Sets: ".. table.concat(setNames, ", ")
 		end
 
 		local categoryItemList = customCategories[L:G(label)]
@@ -105,7 +123,11 @@ local function updateCategories()
 			save = false
 		})
 
-		printChat("Created category '" .. category .. "' with item list: [" .. table.concat(items, ",") .. "]")
+		printChat("Created category '" .. category .. "' with item list: [")
+		for k, _ in pairs(items) do
+			printChat(k)
+		end
+		printChat("]")
 	end
 
 	-- Force a refresh in BetterBags
